@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<extension key="io.compuco.thinkific" type="module">
+  <file>thinkific</file>
+  <name>io.compuco.thinkific</name>
+  <description>Thinkific integration</description>
+  <license>AGPL-3.0</license>
+  <maintainer>
+    <author>Compuco</author>
+    <email>info@compuco.io</email>
+  </maintainer>
+  <urls>
+    <url desc="Main Extension Page">https://github.com/compucorp/io.compuco.thinkific</url>
+    <url desc="Documentation">https://github.com/compucorp/io.compuco.thinkific</url>
+    <url desc="Support">https://github.com/compucorp/io.compuco.thinkific</url>
+    <url desc="Licensing">https://github.com/compucorp/io.compuco.thinkific</url>
+  </urls>
+  <releaseDate>2025-03-03</releaseDate>
+  <version>1.0.0</version>
+  <develStage>alpha</develStage>
+  <compatibility>
+    <ver>5.75</ver>
+  </compatibility>
+  <comments>Thinkific integration</comments>
+  <classloader>
+    <psr0 prefix="CRM_" path="."/>
+    <psr4 prefix="Civi\" path="Civi"/>
+  </classloader>
+  <civix>
+    <namespace>CRM/Thinkific</namespace>
+    <format>25.01.1</format>
+    <angularModule>crmThinkific</angularModule>
+  </civix>
+  <mixins>
+    <mixin>mgd-php@1.0.0</mixin>
+    <mixin>setting-php@1.0.0</mixin>
+    <mixin>smarty-v2@1.0.1</mixin>
+    <mixin>entity-types-php@1.0.0</mixin>
+  </mixins>
+</extension>

@@ -1,0 +1,15 @@
+includes:
+	- phpstan-baseline.neon
+
+parameters:
+	level: 9
+	paths:
+		- Civi
+		- CRM
+	scanFiles:
+	  - thinkific.civix.php
+	scanDirectories:
+	  - ../../../Civi
+	  - ../../../CRM
+	  - ../../../api
+	  - ../../../packages
