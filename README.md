@@ -1,4 +1,4 @@
-## io.compuco.lmsd2lintegration
+## io.compuco.thinkific
 
 This extension integrates Thinkific LMS with civicrm.
 

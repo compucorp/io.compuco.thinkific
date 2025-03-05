@@ -6,3 +6,10 @@ parameters:
 	paths:
 		- Civi
 		- CRM
+	scanFiles:
+	  - thinkific.civix.php
+	scanDirectories:
+	  - ../../../Civi
+	  - ../../../CRM
+	  - ../../../api
+	  - ../../../packages
