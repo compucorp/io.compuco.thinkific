@@ -9,7 +9,7 @@
  +--------------------------------------------------------------------+
  */
 
-use CRM_Thinkific_SettingsManager as SettingsManager;
+use Civi\Thinkific\SettingsManager;
 
 /*
  * Settings metadata file

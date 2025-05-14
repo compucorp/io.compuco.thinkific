@@ -3,6 +3,8 @@
 require_once 'thinkific.civix.php';
 
 use CRM_Thinkific_ExtensionUtil as E;
+use Civi\Thinkific\Hook\BuildForm\Event;
+use Civi\Thinkific\Hook\FieldOptions\EventCreation;
 
 /**
  * Implements hook_civicrm_config().
@@ -50,8 +52,8 @@ function thinkific_civicrm_navigationMenu(&$menu) {
 
 function thinkific_civicrm_fieldOptions(string $entity, string $field, ?array &$options) {
   $hooks = [];
-  if (CRM_Thinkific_Hook_FieldOptions_EventCreation::shouldRun($entity, $field)) {
-    $hooks[] = new CRM_Thinkific_Hook_FieldOptions_EventCreation($field, $options);
+  if (EventCreation::shouldRun($entity, $field)) {
+    $hooks[] = new EventCreation($field, $options);
   }
 
   array_walk($hooks, function ($hook) {
@@ -61,8 +63,8 @@ function thinkific_civicrm_fieldOptions(string $entity, string $field, ?array &$
 
 function thinkific_civicrm_buildForm(string $formName, CRM_Core_Form $form) {
   $hooks = [];
-  if (CRM_Thinkific_Hook_BuildForm_Event::shouldRun($formName, $form)) {
-    $hooks[] = new CRM_Thinkific_Hook_BuildForm_Event($form);
+  if (Event::shouldRun($formName, $form)) {
+    $hooks[] = new Event($form);
   }
 
   array_walk($hooks, function ($hook) {

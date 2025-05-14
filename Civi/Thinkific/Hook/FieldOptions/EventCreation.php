@@ -1,6 +1,10 @@
 <?php
 
-class CRM_Thinkific_Hook_FieldOptions_EventCreation {
+namespace Civi\Thinkific\Hook\FieldOptions;
+
+use Civi\Thinkific\CustomFieldsManager;
+
+class EventCreation {
 
   /**
    * @var array
@@ -20,7 +24,7 @@ class CRM_Thinkific_Hook_FieldOptions_EventCreation {
 
   public function run(): void {
     $thinkificFields = self::getThinkificFields();
-    if (array_search($this->field, $thinkificFields) === CRM_Thinkific_CustomFieldsManager::ROLES_FIELD) {
+    if (array_search($this->field, $thinkificFields) === CustomFieldsManager::ROLES_FIELD) {
       $this->fillRolesFieldOptions();
       return;
     }
@@ -50,7 +54,7 @@ class CRM_Thinkific_Hook_FieldOptions_EventCreation {
       'checkPermissions' => FALSE,
       'select' => ['CONCAT("custom_", id) AS identifier', 'name'],
       'where' => [
-        ['name', 'IN', [CRM_Thinkific_CustomFieldsManager::ROLES_FIELD, CRM_Thinkific_CustomFieldsManager::STATUS_FIELD]],
+        ['name', 'IN', [CustomFieldsManager::ROLES_FIELD, CustomFieldsManager::STATUS_FIELD]],
       ],
     ])->getArrayCopy();
 

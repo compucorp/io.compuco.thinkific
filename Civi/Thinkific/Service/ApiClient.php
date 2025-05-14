@@ -4,7 +4,7 @@ namespace Civi\Thinkific\Service;
 
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
-use CRM_Thinkific_SettingsManager as SettingsManager;
+use Civi\Thinkific\SettingsManager;
 
 class ApiClient {
   private const API_URL = 'https://api.thinkific.com/api/public/v1/';

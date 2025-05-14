@@ -5,6 +5,8 @@
  * Exported Custom group and fields for Sync Event to Thinkific.
  */
 
+use Civi\Thinkific\CustomFieldsManager;
+
 $mgd = [
   [
     'name' => 'CustomGroup_Sync_Event_to_Thinkific',
@@ -96,7 +98,7 @@ $mgd = [
       'version' => 4,
       'values' => [
         'custom_group_id.name' => 'Sync_Event_to_Thinkific',
-        'name' => CRM_Thinkific_CustomFieldsManager::SYNC_FIELD,
+        'name' => CustomFieldsManager::SYNC_FIELD,
         'label' => 'Sync event to Thinkific',
         'data_type' => 'String',
         'html_type' => 'CheckBox',
@@ -136,7 +138,7 @@ $mgd = [
       'version' => 4,
       'values' => [
         'custom_group_id.name' => 'Sync_Event_to_Thinkific',
-        'name' => CRM_Thinkific_CustomFieldsManager::CODE_FIELD,
+        'name' => CustomFieldsManager::CODE_FIELD,
         'label' => 'Thinkific course code',
         'data_type' => 'String',
         'html_type' => 'Text',
@@ -175,7 +177,7 @@ $mgd = [
       'version' => 4,
       'values' => [
         'custom_group_id.name' => 'Sync_Event_to_Thinkific',
-        'name' => CRM_Thinkific_CustomFieldsManager::ROLES_FIELD,
+        'name' => CustomFieldsManager::ROLES_FIELD,
         'label' => 'Participant roles to enrol in Thinkific course',
         'data_type' => 'String',
         'html_type' => 'Select',
@@ -214,7 +216,7 @@ $mgd = [
       'version' => 4,
       'values' => [
         'custom_group_id.name' => 'Sync_Event_to_Thinkific',
-        'name' => CRM_Thinkific_CustomFieldsManager::STATUS_FIELD,
+        'name' => CustomFieldsManager::STATUS_FIELD,
         'label' => 'Participant status to enrol in Thinkific course',
         'data_type' => 'String',
         'html_type' => 'Select',

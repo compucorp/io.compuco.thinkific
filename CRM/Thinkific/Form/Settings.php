@@ -1,7 +1,7 @@
 <?php
 
 use CRM_Thinkific_ExtensionUtil as E;
-use CRM_Thinkific_SettingsManager as SettingsManager;
+use Civi\Thinkific\SettingsManager;
 use Civi\Thinkific\Service\ApiClient;
 use GuzzleHttp\Exception\BadResponseException;
 
