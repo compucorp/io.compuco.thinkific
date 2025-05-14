@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<menu>
+  <item>
+    <path>civicrm/admin/setting/preferences/thinkific</path>
+    <page_callback>CRM_Thinkific_Form_Settings</page_callback>
+    <title>Thinkific LMS Settings</title>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
+</menu>
