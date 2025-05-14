@@ -8,6 +8,7 @@ parameters:
 		- CRM
 	scanFiles:
 	  - thinkific.civix.php
+	  - ../../../Civi.php
 	scanDirectories:
 	  - ../../../Civi
 	  - ../../../CRM

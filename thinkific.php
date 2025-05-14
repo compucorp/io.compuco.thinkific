@@ -47,3 +47,25 @@ function thinkific_civicrm_navigationMenu(&$menu) {
   ));
   _thinkific_civix_navigationMenu($menu);
 }
+
+function thinkific_civicrm_fieldOptions(string $entity, string $field, ?array &$options) {
+  $hooks = [];
+  if (CRM_Thinkific_Hook_FieldOptions_EventCreation::shouldRun($entity, $field)) {
+    $hooks[] = new CRM_Thinkific_Hook_FieldOptions_EventCreation($field, $options);
+  }
+
+  array_walk($hooks, function ($hook) {
+    $hook->run();
+  });
+}
+
+function thinkific_civicrm_buildForm(string $formName, CRM_Core_Form $form) {
+  $hooks = [];
+  if (CRM_Thinkific_Hook_BuildForm_Event::shouldRun($formName, $form)) {
+    $hooks[] = new CRM_Thinkific_Hook_BuildForm_Event($form);
+  }
+
+  array_walk($hooks, function ($hook) {
+    $hook->run();
+  });
+}
