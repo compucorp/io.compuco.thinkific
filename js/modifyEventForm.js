@@ -2,16 +2,19 @@ CRM.$(function ($) {
 
   (function() {
    observeCustomFieldsAreDisplayed();
+   if (document.querySelector('#customData_Event')) {
+     (new window.MutationObserver(function () {
+       observeCustomFieldsAreDisplayed();
+     })).observe(document.querySelector('#customData_Event'), {
+       attributes: true
+     });
+   }
   })();
 
   function observeCustomFieldsAreDisplayed() {
     const observer = new window.MutationObserver(function () {
       if ($('.custom-group-Sync_Event_to_Thinkific').length) {
         observer.disconnect();
-
-        if (CRM.vars.thinkific.action === 1) {
-          $('.custom-group-Sync_Event_to_Thinkific input.crm-form-checkbox').attr('checked', true);
-        }
 
         toggleCustomGroupFields();
         $('.custom-group-Sync_Event_to_Thinkific input.crm-form-checkbox').on("change", function () {
@@ -30,7 +33,7 @@ CRM.$(function ($) {
     let syncCheckbox = $('.custom-group-Sync_Event_to_Thinkific input.crm-form-checkbox');
 
     let fields = [
-      $("input[data-crm-custom='Sync_Event_to_Thinkific:Thinkific_Course_Code']"),
+      $("input[data-crm-custom='Sync_Event_to_Thinkific:Thinkific_Course_Id']"),
       $("select[data-crm-custom='Sync_Event_to_Thinkific:Participant_Status_to_Enroll_in_Thinkific_Course']"),
       $("select[data-crm-custom='Sync_Event_to_Thinkific:Participant_Roles_to_Enroll_in_Thinkific_Course']"),
     ];

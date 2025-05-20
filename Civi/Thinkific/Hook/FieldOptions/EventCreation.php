@@ -2,7 +2,7 @@
 
 namespace Civi\Thinkific\Hook\FieldOptions;
 
-use Civi\Thinkific\CustomFieldsManager;
+use Civi\Thinkific\EventCustomFieldsManager;
 
 class EventCreation {
 
@@ -24,7 +24,7 @@ class EventCreation {
 
   public function run(): void {
     $thinkificFields = self::getThinkificFields();
-    if (array_search($this->field, $thinkificFields) === CustomFieldsManager::ROLES_FIELD) {
+    if (array_search($this->field, $thinkificFields) === EventCustomFieldsManager::ROLES_FIELD) {
       $this->fillRolesFieldOptions();
       return;
     }
@@ -54,7 +54,7 @@ class EventCreation {
       'checkPermissions' => FALSE,
       'select' => ['CONCAT("custom_", id) AS identifier', 'name'],
       'where' => [
-        ['name', 'IN', [CustomFieldsManager::ROLES_FIELD, CustomFieldsManager::STATUS_FIELD]],
+        ['name', 'IN', [EventCustomFieldsManager::ROLES_FIELD, EventCustomFieldsManager::STATUS_FIELD]],
       ],
     ])->getArrayCopy();
 

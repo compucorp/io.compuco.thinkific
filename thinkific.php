@@ -5,6 +5,7 @@ require_once 'thinkific.civix.php';
 use CRM_Thinkific_ExtensionUtil as E;
 use Civi\Thinkific\Hook\BuildForm\Event;
 use Civi\Thinkific\Hook\FieldOptions\EventCreation;
+use Civi\Thinkific\Hook\Post\Participant;
 
 /**
  * Implements hook_civicrm_config().
@@ -64,10 +65,38 @@ function thinkific_civicrm_fieldOptions(string $entity, string $field, ?array &$
 function thinkific_civicrm_buildForm(string $formName, CRM_Core_Form $form) {
   $hooks = [];
   if (Event::shouldRun($formName, $form)) {
-    $hooks[] = new Event($form);
+    $hooks[] = new Event();
   }
 
   array_walk($hooks, function ($hook) {
     $hook->run();
   });
+}
+
+function thinkific_civicrm_post(string $op, string $objectName, int $objectId, &$objectRef) {
+  $hooks = [];
+  if (Participant::shouldRun($op, $objectName, $objectId, $objectRef)) {
+    $hooks[] = new Participant($objectId, $objectRef);
+  }
+
+  array_walk($hooks, function ($hook) {
+    $hook->run();
+  });
+}
+
+function thinkific_civicrm_container($container) {
+  $containers = [
+    new \Civi\Thinkific\Hook\Container\ServiceContainer($container),
+  ];
+
+  foreach ($containers as $container) {
+    $container->register();
+  }
+}
+
+function thinkific_civicrm_pageRun($page): void {
+  $pageName = $page->getVar('_name');
+  if ($pageName == 'CRM_Contact_Page_View_Summary') {
+    CRM_Core_Resources::singleton()->addStyle('details.customFieldGroup {word-wrap: break-word;} ');
+  }
 }

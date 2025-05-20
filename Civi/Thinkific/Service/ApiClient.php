@@ -16,13 +16,15 @@ class ApiClient {
   private array $requestHeaders = [];
 
   public function __construct() {
-    $domainId = \CRM_Core_Config::domainID();
+    /** @var array<int, array<string, mixed>> $settings */
+    $settings = civicrm_api4('setting', 'get', [
+      'select' => [SettingsManager::API_KEY, SettingsManager::SUBDOMAIN],
+      'checkPermissions' => FALSE,
+    ])->getArrayCopy();
 
-    /** @var array<string, array<int, array<string, mixed>>> $settings */
-    $settings = civicrm_api3('setting', 'get', ['return' => [SettingsManager::API_KEY, SettingsManager::SUBDOMAIN]]);
     $this->requestHeaders = [
-      'X-Auth-API-Key' => $settings['values'][$domainId][SettingsManager::API_KEY],
-      'X-Auth-Subdomain' => $settings['values'][$domainId][SettingsManager::SUBDOMAIN],
+      'X-Auth-API-Key' => $settings[0]['value'] ?? '',
+      'X-Auth-Subdomain' => $settings[1]['value'] ?? '',
       'Content-Type' => 'application/json',
     ];
   }
@@ -31,18 +33,19 @@ class ApiClient {
    * @param string $method
    * @param string $url
    * @param array<string,mixed> $headers
+   * @param array<string,mixed> $params
    *
    * @return \Psr\Http\Message\ResponseInterface
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  public function request(string $method, string $url, array $headers = []): ResponseInterface {
+  public function request(string $method, string $url, array $headers = [], array $params = []): ResponseInterface {
     $client = new Client([
       'headers' => array_merge($this->requestHeaders, $headers),
     ]);
 
     $completeUrl = self::API_URL . $url;
 
-    return $client->request($method, $completeUrl);
+    return $client->request($method, $completeUrl, ['form_params' => $params]);
   }
 
 }
