@@ -3,6 +3,7 @@
 namespace Civi\Thinkific;
 
 class ContactCustomFieldsManager {
+  const CUSTOM_GROUP = 'Thinkific_sync_data';
   const USER_FIELD = 'Thinkific_user_ID';
   const SYNC_STATUS_FIELD = 'Sync_status';
   const SYNC_DATE_FIELD = 'Last_synced_date';

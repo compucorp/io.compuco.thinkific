@@ -16,7 +16,7 @@ return [
     'params' => [
       'version' => 4,
       'values' => [
-        'name' => 'Thinkific_sync_data',
+        'name' => ContactCustomFieldsManager::CUSTOM_GROUP,
         'title' => 'Thinkific sync data',
         'extends' => 'Contact',
         'extends_entity_column_value' => NULL,
@@ -40,6 +40,83 @@ return [
     ],
   ],
   [
+    'name' => 'OptionGroup_Thinkific_Sync_Status',
+    'entity' => 'OptionGroup',
+    'cleanup' => 'unused',
+    'update' => 'unmodified',
+    'params' => [
+      'version' => 4,
+      'values' => [
+        'name' => 'Thinkific_Sync_Status',
+        'title' => 'Thinkific sync :: Sync status',
+        'description' => NULL,
+        'data_type' => 'String',
+        'is_reserved' => FALSE,
+        'is_active' => TRUE,
+        'is_locked' => FALSE,
+        'option_value_fields' => [
+          'name',
+          'label',
+          'description',
+        ],
+      ],
+    ],
+  ],
+  [
+    'name' => 'OptionGroup_Thinkific_Sync_Status_OptionValue_Successful',
+    'entity' => 'OptionValue',
+    'cleanup' => 'unused',
+    'update' => 'unmodified',
+    'params' => [
+      'version' => 4,
+      'values' => [
+        'option_group_id.name' => 'Thinkific_Sync_Status',
+        'label' => 'Successful',
+        'value' => '1',
+        'name' => 'Successful',
+        'grouping' => NULL,
+        'filter' => 0,
+        'is_default' => FALSE,
+        'description' => NULL,
+        'is_optgroup' => FALSE,
+        'is_reserved' => FALSE,
+        'is_active' => TRUE,
+        'icon' => NULL,
+        'color' => NULL,
+        'component_id' => NULL,
+        'domain_id' => NULL,
+        'visibility_id' => NULL,
+      ],
+    ],
+  ],
+  [
+    'name' => 'OptionGroup_Thinkific_Sync_Status_OptionValue_Failed',
+    'entity' => 'OptionValue',
+    'cleanup' => 'unused',
+    'update' => 'unmodified',
+    'params' => [
+      'version' => 4,
+      'values' => [
+        'option_group_id.name' => 'Thinkific_Sync_Status',
+        'label' => 'Failed',
+        'value' => '0',
+        'name' => 'Failed',
+        'grouping' => NULL,
+        'filter' => 0,
+        'is_default' => FALSE,
+        'description' => NULL,
+        'is_optgroup' => FALSE,
+        'is_reserved' => FALSE,
+        'is_active' => TRUE,
+        'icon' => NULL,
+        'color' => NULL,
+        'component_id' => NULL,
+        'domain_id' => NULL,
+        'visibility_id' => NULL,
+      ],
+    ],
+  ],
+  [
     'name' => 'CustomGroup_Thinkific_Sync_Data_CustomField_Thinkific_User_ID',
     'entity' => 'CustomField',
     'cleanup' => 'unused',
@@ -47,7 +124,7 @@ return [
     'params' => [
       'version' => 4,
       'values' => [
-        'custom_group_id.name' => 'Thinkific_sync_data',
+        'custom_group_id.name' => ContactCustomFieldsManager::CUSTOM_GROUP,
         'name' => ContactCustomFieldsManager::USER_FIELD,
         'label' => 'Thinkific user ID',
         'data_type' => 'String',
@@ -62,7 +139,7 @@ return [
         'attributes' => NULL,
         'javascript' => NULL,
         'is_active' => TRUE,
-        'is_view' => FALSE,
+        'is_view' => TRUE,
         'options_per_line' => NULL,
         'text_length' => 255,
         'start_date_years' => NULL,
@@ -86,7 +163,7 @@ return [
     'params' => [
       'version' => 4,
       'values' => [
-        'custom_group_id.name' => 'Thinkific_sync_data',
+        'custom_group_id.name' => ContactCustomFieldsManager::CUSTOM_GROUP,
         'name' => ContactCustomFieldsManager::SYNC_STATUS_FIELD,
         'label' => 'Sync status',
         'data_type' => 'String',
@@ -126,7 +203,7 @@ return [
     'params' => [
       'version' => 4,
       'values' => [
-        'custom_group_id.name' => 'Thinkific_sync_data',
+        'custom_group_id.name' => ContactCustomFieldsManager::CUSTOM_GROUP,
         'name' => ContactCustomFieldsManager::SYNC_DATE_FIELD,
         'label' => 'Last synced date',
         'data_type' => 'Date',
@@ -146,7 +223,7 @@ return [
         'text_length' => 255,
         'start_date_years' => NULL,
         'end_date_years' => NULL,
-        'date_format' => 'dd-mm-yyyy',
+        'date_format' => 'dd-mm-yy',
         'time_format' => 2,
         'note_columns' => 60,
         'note_rows' => 4,
@@ -165,7 +242,7 @@ return [
     'params' => [
       'version' => 4,
       'values' => [
-        'custom_group_id.name' => 'Thinkific_sync_data',
+        'custom_group_id.name' => ContactCustomFieldsManager::CUSTOM_GROUP,
         'name' => ContactCustomFieldsManager::RESPONSE_FIELD,
         'label' => 'Last API response',
         'data_type' => 'Memo',

@@ -5,7 +5,7 @@
  * Exported Custom group and fields for Sync Event to Thinkific.
  */
 
-use Civi\Thinkific\CustomFieldsManager;
+use Civi\Thinkific\EventCustomFieldsManager;
 
 $mgd = [
   [
@@ -16,7 +16,7 @@ $mgd = [
     'params' => [
       'version' => 4,
       'values' => [
-        'name' => 'Sync_Event_to_Thinkific',
+        'name' => EventCustomFieldsManager::CUSTOM_GROUP,
         'title' => 'Sync Event to Thinkific',
         'extends' => 'Event',
         'extends_entity_column_value' => NULL,
@@ -97,12 +97,12 @@ $mgd = [
     'params' => [
       'version' => 4,
       'values' => [
-        'custom_group_id.name' => 'Sync_Event_to_Thinkific',
-        'name' => CustomFieldsManager::SYNC_FIELD,
+        'custom_group_id.name' => EventCustomFieldsManager::CUSTOM_GROUP,
+        'name' => EventCustomFieldsManager::SYNC_FIELD,
         'label' => 'Sync event to Thinkific',
         'data_type' => 'String',
         'html_type' => 'CheckBox',
-        'default_value' => 1,
+        'default_value' => NULL,
         'is_required' => FALSE,
         'is_searchable' => FALSE,
         'is_search_range' => FALSE,
@@ -130,16 +130,16 @@ $mgd = [
     ],
   ],
   [
-    'name' => 'CustomGroup_Sync_Event_to_Thinkific_CustomField_Thinkific_Course_Code',
+    'name' => 'CustomGroup_Sync_Event_to_Thinkific_CustomField_Thinkific_Course_Id',
     'entity' => 'CustomField',
     'cleanup' => 'unused',
     'update' => 'unmodified',
     'params' => [
       'version' => 4,
       'values' => [
-        'custom_group_id.name' => 'Sync_Event_to_Thinkific',
-        'name' => CustomFieldsManager::CODE_FIELD,
-        'label' => 'Thinkific course code',
+        'custom_group_id.name' => EventCustomFieldsManager::CUSTOM_GROUP,
+        'name' => EventCustomFieldsManager::ID_FIELD,
+        'label' => 'Thinkific course ID',
         'data_type' => 'String',
         'html_type' => 'Text',
         'default_value' => NULL,
@@ -161,7 +161,7 @@ $mgd = [
         'time_format' => NULL,
         'note_columns' => 60,
         'note_rows' => 4,
-        'column_name' => 'thinkific_course_code',
+        'column_name' => 'thinkific_course_id',
         'serialize' => 0,
         'filter' => NULL,
         'in_selector' => FALSE,
@@ -176,8 +176,8 @@ $mgd = [
     'params' => [
       'version' => 4,
       'values' => [
-        'custom_group_id.name' => 'Sync_Event_to_Thinkific',
-        'name' => CustomFieldsManager::ROLES_FIELD,
+        'custom_group_id.name' => EventCustomFieldsManager::CUSTOM_GROUP,
+        'name' => EventCustomFieldsManager::ROLES_FIELD,
         'label' => 'Participant roles to enrol in Thinkific course',
         'data_type' => 'String',
         'html_type' => 'Select',
@@ -215,8 +215,8 @@ $mgd = [
     'params' => [
       'version' => 4,
       'values' => [
-        'custom_group_id.name' => 'Sync_Event_to_Thinkific',
-        'name' => CustomFieldsManager::STATUS_FIELD,
+        'custom_group_id.name' => EventCustomFieldsManager::CUSTOM_GROUP,
+        'name' => EventCustomFieldsManager::STATUS_FIELD,
         'label' => 'Participant status to enrol in Thinkific course',
         'data_type' => 'String',
         'html_type' => 'Select',

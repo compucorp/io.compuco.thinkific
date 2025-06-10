@@ -2,7 +2,6 @@
 
 use CRM_Thinkific_ExtensionUtil as E;
 use Civi\Thinkific\SettingsManager;
-use Civi\Thinkific\Service\ApiClient;
 use GuzzleHttp\Exception\BadResponseException;
 
 /**
@@ -34,7 +33,8 @@ class CRM_Thinkific_Form_Settings extends CRM_Core_Form {
     $values = $this->exportValues();
 
     try {
-      $client = new ApiClient();
+      /** @var Civi\Thinkific\Service\ApiClient $client */
+      $client = Civi::service('service.thinkific.api_client');
       $headers = [
         'X-Auth-API-Key' => $values[SettingsManager::API_KEY],
         'X-Auth-Subdomain' => $values[SettingsManager::SUBDOMAIN],
@@ -98,7 +98,6 @@ class CRM_Thinkific_Form_Settings extends CRM_Core_Form {
     // items don't have labels.  We'll identify renderable by filtering on
     // the 'label'.
     $elementNames = [];
-    /** @phpstan-ignore property.notFound */
     foreach ($this->_elements as $element) {
       /** @var HTML_QuickForm_element $element */
       $label = $element->getLabel();
