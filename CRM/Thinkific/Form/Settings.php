@@ -13,8 +13,8 @@ class CRM_Thinkific_Form_Settings extends CRM_Core_Form {
 
   public function buildQuickForm(): void {
     CRM_Utils_System::setTitle(E::ts('Thinkfic LMS Settings'));
-    $this->add('password', SettingsManager::API_KEY, E::ts('Thinkfic Api Key'), NULL, TRUE);
-    $this->add('text', SettingsManager::SUBDOMAIN, E::ts('Thinkfic Subdomain'), NULL, TRUE);
+    $this->add('password', SettingsManager::API_KEY, E::ts('Thinkific API key'), NULL, TRUE);
+    $this->add('text', SettingsManager::SUBDOMAIN, E::ts('Thinkific Sub domain'), NULL, TRUE);
 
     $this->addButtons([
       [
@@ -42,7 +42,7 @@ class CRM_Thinkific_Form_Settings extends CRM_Core_Form {
       ];
       $client->request('GET', 'courses', $headers);
       /** @var array<string, mixed> $result */
-      $result = civicrm_api3('setting', 'create', [
+      $result = civicrm_api3('Setting', 'create', [
         SettingsManager::API_KEY => $values[SettingsManager::API_KEY],
         SettingsManager::SUBDOMAIN => $values[SettingsManager::SUBDOMAIN],
       ]);
@@ -51,6 +51,7 @@ class CRM_Thinkific_Form_Settings extends CRM_Core_Form {
       }
     }
     catch (Throwable $e) {
+      Civi::log()->error('LMS Setting error' . $e->getMessage());
       $msg = 'An issue has occurred connecting to the Thinkific platform. Please contact your administrator.';
       if ($e instanceof BadResponseException) {
         $msg .= ' Error code: ' . $e->getResponse()->getStatusCode();
@@ -77,7 +78,7 @@ class CRM_Thinkific_Form_Settings extends CRM_Core_Form {
     $domainId = CRM_Core_Config::domainID();
 
     /** @var array<string, array<int, array<string, mixed>>> $currentValues */
-    $currentValues = civicrm_api3('setting', 'get', ['return' => [SettingsManager::API_KEY, SettingsManager::SUBDOMAIN]]);
+    $currentValues = civicrm_api3('Setting', 'get', ['return' => [SettingsManager::API_KEY, SettingsManager::SUBDOMAIN]]);
 
     if (isset($currentValues['values'][$domainId])) {
       foreach ($currentValues['values'][$domainId] as $name => $value) {

@@ -17,7 +17,7 @@ class ApiClient {
 
   public function __construct() {
     /** @var array<int, array<string, mixed>> $settings */
-    $settings = civicrm_api4('setting', 'get', [
+    $settings = civicrm_api4('Setting', 'get', [
       'select' => [SettingsManager::API_KEY, SettingsManager::SUBDOMAIN],
       'checkPermissions' => FALSE,
     ])->getArrayCopy();

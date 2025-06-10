@@ -6,6 +6,7 @@ use CRM_Thinkific_ExtensionUtil as E;
 use Civi\Thinkific\Hook\BuildForm\Event;
 use Civi\Thinkific\Hook\FieldOptions\EventCreation;
 use Civi\Thinkific\Hook\Post\Participant;
+use Civi\Thinkific\Hook\PostProcess\ParticipantRegistration;
 
 /**
  * Implements hook_civicrm_config().
@@ -99,4 +100,15 @@ function thinkific_civicrm_pageRun($page): void {
   if ($pageName == 'CRM_Contact_Page_View_Summary') {
     CRM_Core_Resources::singleton()->addStyle('details.customFieldGroup {word-wrap: break-word;} ');
   }
+}
+
+function thinkific_civicrm_postProcess($formName, $form): void {
+  $hooks = [];
+  if (ParticipantRegistration::shouldRun($formName, $form)) {
+    $hooks[] = new ParticipantRegistration();
+  }
+
+  array_walk($hooks, function ($hook) {
+    $hook->run();
+  });
 }

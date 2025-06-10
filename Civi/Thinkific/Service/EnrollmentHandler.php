@@ -39,7 +39,7 @@ class EnrollmentHandler {
     }
 
     $url = 'enrollments/' . $currentEnrollment->id;
-    $enrollmentData = ['expiry_date' => date('Y-m-d\TH:i:s\Z')];
+    $enrollmentData = ['expiry_date' => date('Y-m-d\TH:i:s\Z', strtotime("-1 days"))];
     try {
       $unEnrollResponse = $this->apiClient->request('PUT', $url, [], $enrollmentData);
       $this->updateParticipant($unEnrollResponse, $participantId, $currentEnrollment);
