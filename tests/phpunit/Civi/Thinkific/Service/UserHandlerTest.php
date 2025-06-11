@@ -23,21 +23,21 @@ class UserHandlerTest extends BaseHeadlessTest {
         'POST',
         'users',
         [],
-        ['first_name' => $firstName, 'last_name' => $lastName, 'email' => $email, 'company' => '', 'external_id' => $contact['id']],
+        ['first_name' => $firstName, 'last_name' => $lastName, 'email' => $email, 'company' => '', 'external_source' => UserHandler::EXTERNAL_SOURCE_PREFIX . $contact['id']],
       )
       ->willReturn(new Response());
 
     $mockUserHandler = $this
       ->getMockBuilder(UserHandler::class)
-      ->onlyMethods(['getContactsThinkificId', 'getExistingThinkificUserIdByEmail', 'getContactData', 'updateContact', 'updateThinkificUser'])
+      ->onlyMethods(['getContactsThinkificId', 'getExistingThinkificUserByEmail', 'getContactData', 'updateContact', 'updateThinkificUser'])
       ->setConstructorArgs([$mockApiClient])
       ->getMock();
     $mockUserHandler->expects($this->once())
       ->method('getContactsThinkificId')
       ->willReturn(0);
     $mockUserHandler->expects($this->once())
-      ->method('getExistingThinkificUserIdByEmail')
-      ->willReturn(0);
+      ->method('getExistingThinkificUserByEmail')
+      ->willReturn(new stdClass());
     $mockUserHandler->expects($this->once())
       ->method('getContactData')
       ->willReturn(['first_name' => $firstName, 'last_name' => $lastName, 'employer_id.display_name' => NULL]);
@@ -71,7 +71,7 @@ class UserHandlerTest extends BaseHeadlessTest {
         'PUT',
         'users/' . $thinkificUserId,
         [],
-        ['first_name' => $firstName, 'last_name' => $lastName, 'company' => '', 'external_id' => $contact['id']],
+        ['first_name' => $firstName, 'last_name' => $lastName, 'company' => '', 'external_source' => UserHandler::EXTERNAL_SOURCE_PREFIX . $contact['id']],
       )
       ->willReturn(new Response());
 

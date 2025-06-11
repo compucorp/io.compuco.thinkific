@@ -36,7 +36,7 @@ class ParticipantManager {
 
   private function displayError(): void {
     if (Webform::isWebformSubmission()) {
-      ErrorHandler::displayWebformError();
+      ErrorHandler::displayWebformError(ErrorHandler::LMS_SYNC_ERROR_MESSAGE);
     }
     else {
       \Civi::$statics[\CRM_Thinkific_ExtensionUtil::LONG_NAME]['participantSynError'] = TRUE;

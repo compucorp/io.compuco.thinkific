@@ -5,7 +5,8 @@ require_once 'thinkific.civix.php';
 use CRM_Thinkific_ExtensionUtil as E;
 use Civi\Thinkific\Hook\BuildForm\Event;
 use Civi\Thinkific\Hook\FieldOptions\EventCreation;
-use Civi\Thinkific\Hook\Post\Participant;
+use Civi\Thinkific\Hook\Post\Participant as PostParticipant;
+use Civi\Thinkific\Hook\Pre\Participant as PreParticipant;
 use Civi\Thinkific\Hook\PostProcess\ParticipantRegistration;
 
 /**
@@ -76,8 +77,8 @@ function thinkific_civicrm_buildForm(string $formName, CRM_Core_Form $form) {
 
 function thinkific_civicrm_post(string $op, string $objectName, int $objectId, &$objectRef) {
   $hooks = [];
-  if (Participant::shouldRun($op, $objectName, $objectId, $objectRef)) {
-    $hooks[] = new Participant($objectId, $objectRef);
+  if (PostParticipant::shouldRun($op, $objectName, $objectId, $objectRef)) {
+    $hooks[] = new PostParticipant($objectId, $objectRef);
   }
 
   array_walk($hooks, function ($hook) {
@@ -106,6 +107,17 @@ function thinkific_civicrm_postProcess($formName, $form): void {
   $hooks = [];
   if (ParticipantRegistration::shouldRun($formName, $form)) {
     $hooks[] = new ParticipantRegistration();
+  }
+
+  array_walk($hooks, function ($hook) {
+    $hook->run();
+  });
+}
+
+function thinkific_civicrm_pre(string $op, string $objectName, ?int $objectId, &$params) {
+  $hooks = [];
+  if (PreParticipant::shouldRun($op, $objectName, $params)) {
+    $hooks[] = new PreParticipant($params);
   }
 
   array_walk($hooks, function ($hook) {
