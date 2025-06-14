@@ -7,7 +7,7 @@ use Civi\Thinkific\Utils\ErrorHandler;
 class ParticipantRegistration {
 
   public function run(): void {
-    ErrorHandler::displayCiviError();
+    ErrorHandler::displayCiviError(ErrorHandler::LMS_SYNC_ERROR_MESSAGE);
   }
 
   public static function shouldRun(string $formName, \CRM_Core_Form $form): bool {

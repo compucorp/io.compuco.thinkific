@@ -47,18 +47,18 @@ class CRM_Thinkific_Form_Settings extends CRM_Core_Form {
         SettingsManager::SUBDOMAIN => $values[SettingsManager::SUBDOMAIN],
       ]);
       if ($result['is_error'] == 0) {
-        CRM_Core_Session::singleton()->setStatus(E::ts('Connection success.'), E::ts('Thinkfic LMS Settings'), 'success');
+        CRM_Core_Session::singleton()->setStatus(E::ts('Connection success.'), E::ts('Thinkfic Learning Management System Settings'), 'success');
       }
     }
     catch (Throwable $e) {
-      Civi::log()->error('LMS Setting error' . $e->getMessage());
+      Civi::log()->error('LMS Setting error ' . $e->getMessage());
       $msg = 'An issue has occurred connecting to the Thinkific platform. Please contact your administrator.';
       if ($e instanceof BadResponseException) {
         $msg .= ' Error code: ' . $e->getResponse()->getStatusCode();
       }
       CRM_Core_Session::singleton()->setStatus(
         $msg,
-        E::ts('Thinkfic LMS Settings'),
+        E::ts('Thinkfic Learning Management System Settings'),
         'error'
       );
     }

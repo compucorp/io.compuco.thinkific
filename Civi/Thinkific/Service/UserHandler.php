@@ -7,31 +7,29 @@ use Psr\Http\Message\ResponseInterface;
 
 class UserHandler {
 
+  const EXTERNAL_SOURCE_PREFIX = 'civi_';
+
   public function __construct(private ApiClient $apiClient) {
   }
 
   public function getThinkificUserIdForParticipant(\CRM_Event_DAO_Participant $participant): int {
     $existingThinkificUserId = $this->getContactsThinkificId((int) $participant->contact_id);
-    $updateUser = TRUE;
     $contactId = (int) $participant->contact_id;
 
     if ($existingThinkificUserId === 0) {
-      $existingThinkificUserId = $this->getExistingThinkificUserIdByEmail((string) \CRM_Contact_BAO_Contact::getPrimaryEmail($contactId));
-      if ($existingThinkificUserId > 0) {
-        $externalId = $this->getContactIdFromThinkific($existingThinkificUserId);
-        if ($externalId > 0 && $externalId !== (int) $participant->contact_id) {
-          $updateUser = FALSE;
-        }
+      $existingThinkificUser = $this->getExistingThinkificUserByEmail((string) \CRM_Contact_BAO_Contact::getPrimaryEmail($contactId));
+      if (!empty($existingThinkificUser->id)) {
+        $this->validateExternalSource($existingThinkificUser->external_source ?? '', $contactId);
+        $existingThinkificUserId = $existingThinkificUser->id;
       }
     }
     if ($existingThinkificUserId > 0) {
-      if ($updateUser) {
-        $this->updateThinkificUser((int) $participant->contact_id, $existingThinkificUserId);
-      }
+      $this->updateThinkificUser($contactId, $existingThinkificUserId);
+
       return $existingThinkificUserId;
     }
 
-    return $this->createNewThinkificUser((int) $participant->contact_id);
+    return $this->createNewThinkificUser($contactId);
   }
 
   public function getContactsThinkificId(int $contactId): int {
@@ -61,10 +59,10 @@ class UserHandler {
     return 0;
   }
 
-  public function getExistingThinkificUserIdByEmail(string $email): int {
-    $existingUserID = 0;
+  public function getExistingThinkificUserByEmail(string $email): \stdClass {
+    $existingUser = new \stdClass();
     if ($email === '') {
-      return $existingUserID;
+      return $existingUser;
     }
 
     $url = 'users/?query[email]=' . $email;
@@ -73,13 +71,13 @@ class UserHandler {
       /** @var \stdClass $existingUserObject */
       $existingUserObject = json_decode($existingUserResponse->getBody()->getContents());
       if (!empty($existingUserObject->items) && !empty($existingUserObject->items[0]) && $existingUserObject->items[0] instanceof \stdClass) {
-        $existingUserID = (int) ($existingUserObject->items[0]->id ?? 0);
+        $existingUser = $existingUserObject->items[0];
       }
     }
     catch (\Throwable $e) {
     }
 
-    return $existingUserID;
+    return $existingUser;
   }
 
   public function updateThinkificUser(int $contactId, int $thinkificUserId): void {
@@ -93,7 +91,7 @@ class UserHandler {
       'first_name' => $contactData['first_name'],
       'last_name' => $contactData['last_name'],
       'company' => (string) $contactData['employer_id.display_name'],
-      'external_id' => $contactId,
+      'external_source' => self::EXTERNAL_SOURCE_PREFIX . $contactId,
     ];
     try {
       $updateUserResponse = $this->apiClient->request('PUT', $url, [], $userData);
@@ -118,7 +116,8 @@ class UserHandler {
       'last_name' => $contactData['last_name'],
       'email' => $email,
       'company' => (string) $contactData['employer_id.display_name'],
-      'external_id' => $contactId,
+      'external_source' => self::EXTERNAL_SOURCE_PREFIX . $contactId,
+      'send_welcome_email' => TRUE,
     ];
     try {
       $createUserResponse = $this->apiClient->request('POST', $url, [], $userData);
@@ -152,14 +151,6 @@ class UserHandler {
     ]);
   }
 
-  public function getContactIdFromThinkific(int $thinkificUserId): int {
-    $url = 'users/' . $thinkificUserId . '/authentications/SSO';
-    $externalUserResponse = $this->apiClient->request('GET', $url,);
-    $externalUserData = json_decode($externalUserResponse->getBody()->getContents());
-
-    return $externalUserData instanceof \stdClass && $externalUserData->external_id ? $externalUserData->external_id : 0;
-  }
-
   /**
    * @param int $contactId
    *
@@ -176,6 +167,14 @@ class UserHandler {
     ])->getArrayCopy()[0] ?? [];
 
     return $contactData;
+  }
+
+  public function validateExternalSource(string $source, int $contactId): void {
+    preg_match('/civi_(\d+)/', $source, $matches);
+
+    if (!empty($matches[1]) && (int) $matches[1] !== $contactId) {
+      throw new \InvalidArgumentException('Email already exist in thinkific and its linked to another contact');
+    }
   }
 
 }

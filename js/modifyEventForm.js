@@ -17,6 +17,7 @@ CRM.$(function ($) {
         observer.disconnect();
 
         toggleCustomGroupFields();
+        updatePlaceholder();
         $('.custom-group-Sync_Event_to_Thinkific input.crm-form-checkbox').on("change", function () {
           toggleCustomGroupFields();
         });
@@ -64,5 +65,18 @@ CRM.$(function ($) {
   function makeTheFieldNotRequired($field) {
     $($field).removeClass('required');
     $($field).closest('tr').find('.crm-marker').remove();
+  }
+
+  function updatePlaceholder() {
+    $('select[data-crm-custom="Sync_Event_to_Thinkific:Participant_Roles_to_Enroll_in_Thinkific_Course"]')
+      .attr('placeholder', ts('- All Roles -')).crmSelect2({
+      placeholder: '- All Roles -',
+      allowClear: true
+    });
+    $('select[data-crm-custom="Sync_Event_to_Thinkific:Participant_Status_to_Enroll_in_Thinkific_Course"]')
+      .attr('placeholder', ts('- All Statuses -')).crmSelect2({
+      placeholder: '- All Statuses -',
+      allowClear: true
+    });
   }
 });
