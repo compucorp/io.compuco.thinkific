@@ -17,6 +17,7 @@ CRM.$(function ($) {
         observer.disconnect();
 
         toggleCustomGroupFields();
+        removeSpacesInCourseIdField();
         updatePlaceholder();
         $('.custom-group-Sync_Event_to_Thinkific input.crm-form-checkbox').on("change", function () {
           toggleCustomGroupFields();
@@ -77,6 +78,12 @@ CRM.$(function ($) {
       .attr('placeholder', ts('- All Statuses -')).crmSelect2({
       placeholder: '- All Statuses -',
       allowClear: true
+    });
+  }
+
+  function removeSpacesInCourseIdField() {
+    $('input[data-crm-custom="Sync_Event_to_Thinkific:Thinkific_Course_Id"]').on('input', function() {
+      this.value = this.value.replace(/\s/g, '');
     });
   }
 });
