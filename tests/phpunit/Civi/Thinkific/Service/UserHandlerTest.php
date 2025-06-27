@@ -23,7 +23,14 @@ class UserHandlerTest extends BaseHeadlessTest {
         'POST',
         'users',
         [],
-        ['first_name' => $firstName, 'last_name' => $lastName, 'email' => $email, 'company' => '', 'external_source' => UserHandler::EXTERNAL_SOURCE_PREFIX . $contact['id']],
+        [
+          'first_name' => $firstName,
+          'last_name' => $lastName,
+          'email' => $email,
+          'company' => '',
+          'external_source' => UserHandler::EXTERNAL_SOURCE_PREFIX . $contact['id'],
+          'send_welcome_email' => TRUE,
+        ],
       )
       ->willReturn(new Response());
 
