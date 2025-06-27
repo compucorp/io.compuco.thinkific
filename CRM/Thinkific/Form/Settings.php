@@ -109,4 +109,25 @@ class CRM_Thinkific_Form_Settings extends CRM_Core_Form {
     return $elementNames;
   }
 
+  public function addRules(): void {
+    $this->addFormRule(['CRM_Thinkific_Form_Settings', 'formRule']);
+  }
+
+  /**
+   * @param array<string,string> $fields
+   *
+   * @return array<string,string>
+   */
+  public static function formRule(array $fields): array {
+    $messages = [];
+    if (str_contains($fields[SettingsManager::SUBDOMAIN], ' ')) {
+      $messages[SettingsManager::SUBDOMAIN] = CRM_Thinkific_ExtensionUtil::ts('Thinkific Sub domain cannot contain spaces.');
+    }
+    if (str_contains($fields[SettingsManager::API_KEY], ' ')) {
+      $messages[SettingsManager::API_KEY] = CRM_Thinkific_ExtensionUtil::ts('Thinkific Api Key cannot contain spaces.');
+    }
+
+    return $messages;
+  }
+
 }
