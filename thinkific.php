@@ -78,7 +78,7 @@ function thinkific_civicrm_buildForm(string $formName, CRM_Core_Form $form) {
 function thinkific_civicrm_post(string $op, string $objectName, $objectId, &$objectRef) {
   $hooks = [];
   if (PostParticipant::shouldRun($op, $objectName, (int) $objectId, $objectRef)) {
-    $hooks[] = new PostParticipant((int) $objectId, $objectRef);
+    $hooks[] = new PostParticipant((int) $objectId, $objectRef, $op);
   }
 
   array_walk($hooks, function ($hook) {
