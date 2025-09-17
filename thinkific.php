@@ -114,7 +114,7 @@ function thinkific_civicrm_postProcess($formName, $form): void {
   });
 }
 
-function thinkific_civicrm_pre(string $op, string $objectName, ?int $objectId, &$params) {
+function thinkific_civicrm_pre(string $op, string $objectName, $objectId, &$params) {
   $hooks = [];
   if (PreParticipant::shouldRun($op, $objectName, $params)) {
     $hooks[] = new PreParticipant($params);

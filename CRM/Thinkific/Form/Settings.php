@@ -99,6 +99,7 @@ class CRM_Thinkific_Form_Settings extends CRM_Core_Form {
     // items don't have labels.  We'll identify renderable by filtering on
     // the 'label'.
     $elementNames = [];
+    // @phpstan-ignore property.notFound
     foreach ($this->_elements as $element) {
       /** @var HTML_QuickForm_element $element */
       $label = $element->getLabel();
@@ -110,6 +111,7 @@ class CRM_Thinkific_Form_Settings extends CRM_Core_Form {
   }
 
   public function addRules(): void {
+    // @phpstan-ignore method.notFound
     $this->addFormRule(['CRM_Thinkific_Form_Settings', 'formRule']);
   }
 
