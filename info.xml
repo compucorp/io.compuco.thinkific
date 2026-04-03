@@ -15,7 +15,7 @@
     <url desc="Licensing">https://github.com/compucorp/io.compuco.thinkific</url>
   </urls>
   <releaseDate>2026-01-22</releaseDate>
-  <version>7.0.0-alpha1</version>
+  <version>7.0.0-beta1</version>
   <develStage>alpha</develStage>
   <compatibility>
     <ver>5.75</ver>
