@@ -15,26 +15,15 @@ use Civi\Thinkific\SettingsManager;
  * Settings metadata file
  */
 return [
-  'thinkific_api_key' => [
-    'name' => SettingsManager::API_KEY,
-    'title' => 'Thinkific Api Key',
+  SettingsManager::API_ACCESS_TOKEN => [
+    'name' => SettingsManager::API_ACCESS_TOKEN,
+    'title' => 'Thinkific Access Token',
     'type' => 'String',
     'html_type' => 'password',
     'default' => '',
     'is_domain' => 1,
     'is_contact' => 0,
-    'description' => 'Api key from Thinkific',
-    'html_attributes' => [],
-  ],
-  'thinkific_subdomain' => [
-    'name' => SettingsManager::SUBDOMAIN,
-    'title' => 'Thinkific Subdomain',
-    'type' => 'String',
-    'html_type' => 'text',
-    'default' => '',
-    'is_domain' => 1,
-    'is_contact' => 0,
-    'description' => 'Subdomain for Thinkific',
+    'description' => 'Access token from Thinkific',
     'html_attributes' => [],
   ],
 ];

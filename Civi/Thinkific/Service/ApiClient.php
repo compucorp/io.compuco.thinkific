@@ -16,15 +16,11 @@ class ApiClient {
   private array $requestHeaders = [];
 
   public function __construct() {
-    /** @var array<int, array<string, mixed>> $settings */
-    $settings = civicrm_api4('Setting', 'get', [
-      'select' => [SettingsManager::API_KEY, SettingsManager::SUBDOMAIN],
-      'checkPermissions' => FALSE,
-    ])->getArrayCopy();
+    /** @var null|string $accessToken */
+    $accessToken = \Civi::settings()->get(SettingsManager::API_ACCESS_TOKEN);
 
     $this->requestHeaders = [
-      'X-Auth-API-Key' => $settings[0]['value'] ?? '',
-      'X-Auth-Subdomain' => $settings[1]['value'] ?? '',
+      'Authorization' => $accessToken ? 'Bearer ' . $accessToken : '',
       'Content-Type' => 'application/json',
     ];
   }
