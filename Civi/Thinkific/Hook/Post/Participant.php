@@ -12,11 +12,11 @@ class Participant {
    */
   private static array $processedParticipants = [];
 
-  public function __construct(private int $participantId, private \CRM_Event_DAO_Participant $participant) {
+  public function __construct(private int $participantId, private \CRM_Event_DAO_Participant $participant, private string $op) {
   }
 
   public function run(): void {
-    self::$processedParticipants[$this->participantId] = 1;
+    self::$processedParticipants[$this->op][$this->participantId] = 1;
     /** @var array<string, string|int|int[]> $eventData */
     $eventData = civicrm_api4('Event', 'get', [
       'checkPermissions' => FALSE,
@@ -64,7 +64,7 @@ class Participant {
    * @return bool
    */
   public static function shouldRun(string $op, string $objectName, int $objectId, $objectRef): bool {
-    if (!in_array($op, ['create', 'edit']) || $objectName !== 'Participant' || !$objectRef instanceof \CRM_Event_DAO_Participant || isset(self::$processedParticipants[$objectId])) {
+    if (!in_array($op, ['create', 'edit']) || $objectName !== 'Participant' || !$objectRef instanceof \CRM_Event_DAO_Participant || isset(self::$processedParticipants[$op][$objectId])) {
       return FALSE;
     }
 

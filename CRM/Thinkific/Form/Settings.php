@@ -12,9 +12,8 @@ use GuzzleHttp\Exception\BadResponseException;
 class CRM_Thinkific_Form_Settings extends CRM_Core_Form {
 
   public function buildQuickForm(): void {
-    CRM_Utils_System::setTitle(E::ts('Thinkfic LMS Settings'));
-    $this->add('password', SettingsManager::API_KEY, E::ts('Thinkific API key'), NULL, TRUE);
-    $this->add('text', SettingsManager::SUBDOMAIN, E::ts('Thinkific Sub domain'), NULL, TRUE);
+    CRM_Utils_System::setTitle(E::ts('Thinkific LMS Settings'));
+    $this->add('password', SettingsManager::API_ACCESS_TOKEN, E::ts('Thinkific Access Token'), NULL, TRUE);
 
     $this->addButtons([
       [
@@ -36,15 +35,13 @@ class CRM_Thinkific_Form_Settings extends CRM_Core_Form {
       /** @var Civi\Thinkific\Service\ApiClient $client */
       $client = Civi::service('service.thinkific.api_client');
       $headers = [
-        'X-Auth-API-Key' => $values[SettingsManager::API_KEY],
-        'X-Auth-Subdomain' => $values[SettingsManager::SUBDOMAIN],
+        'Authorization' => $values[SettingsManager::API_ACCESS_TOKEN] ? 'Bearer ' . $values[SettingsManager::API_ACCESS_TOKEN] : '',
         'Content-Type' => 'application/json',
       ];
       $client->request('GET', 'courses', $headers);
       /** @var array<string, mixed> $result */
       $result = civicrm_api3('Setting', 'create', [
-        SettingsManager::API_KEY => $values[SettingsManager::API_KEY],
-        SettingsManager::SUBDOMAIN => $values[SettingsManager::SUBDOMAIN],
+        SettingsManager::API_ACCESS_TOKEN => $values[SettingsManager::API_ACCESS_TOKEN],
       ]);
       if ($result['is_error'] == 0) {
         CRM_Core_Session::singleton()->setStatus(E::ts('Connection success.'), E::ts('Thinkfic Learning Management System Settings'), 'success');
@@ -78,7 +75,7 @@ class CRM_Thinkific_Form_Settings extends CRM_Core_Form {
     $domainId = CRM_Core_Config::domainID();
 
     /** @var array<string, array<int, array<string, mixed>>> $currentValues */
-    $currentValues = civicrm_api3('Setting', 'get', ['return' => [SettingsManager::API_KEY, SettingsManager::SUBDOMAIN]]);
+    $currentValues = civicrm_api3('Setting', 'get', ['return' => [SettingsManager::API_ACCESS_TOKEN]]);
 
     if (isset($currentValues['values'][$domainId])) {
       foreach ($currentValues['values'][$domainId] as $name => $value) {
@@ -122,11 +119,9 @@ class CRM_Thinkific_Form_Settings extends CRM_Core_Form {
    */
   public static function formRule(array $fields): array {
     $messages = [];
-    if (str_contains($fields[SettingsManager::SUBDOMAIN], ' ')) {
-      $messages[SettingsManager::SUBDOMAIN] = CRM_Thinkific_ExtensionUtil::ts('Thinkific Sub domain cannot contain spaces.');
-    }
-    if (str_contains($fields[SettingsManager::API_KEY], ' ')) {
-      $messages[SettingsManager::API_KEY] = CRM_Thinkific_ExtensionUtil::ts('Thinkific Api Key cannot contain spaces.');
+
+    if (str_contains($fields[SettingsManager::API_ACCESS_TOKEN], ' ')) {
+      $messages[SettingsManager::API_ACCESS_TOKEN] = CRM_Thinkific_ExtensionUtil::ts('Thinkific Access Token cannot contain spaces.');
     }
 
     return $messages;
